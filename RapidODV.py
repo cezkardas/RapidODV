@@ -57,7 +57,9 @@ class MyFrame(Frame):
         
         #browsing for .csv files and loading it
         self.filecount=1;
-        fname = askopenfilename(filetypes=(("CSV", "*.csv"),("All files", "*.*") ))
+        
+        fname = askopenfilename(initialdir=(os.path.expanduser('C:\OptimusDataViewer\CSV')), filetypes=(("CSV", "*.csv"),("All files", "*.*") ))
+        
         if fname:
             try:
                 self.name=fname
@@ -107,6 +109,8 @@ class MyFrame(Frame):
             self.entry2=Entry(self)
             self.entry2.grid(row=5, column=0, sticky=W)
             self.entry2.insert(END, "Enter Y2 axis title")
+            self.button3.grid(row=8, column= 0, sticky=W)
+            self.button4.grid(row=9, column=0, sticky=W)
         else:
             #unnecessary Select Y2 button disappears
             self.button4.grid(row=7, column=0, sticky=W)
@@ -154,11 +158,11 @@ class MyFrame(Frame):
                 dtemp = IntVar()
                 d.append(dtemp)
                 self.checkbuttons.append(Checkbutton(self, text=mode, variable=d[text-1], onvalue=1, offvalue=0))
-                self.checkbuttons[text-1].grid(row=7+text, column=0, sticky=W)
+                self.checkbuttons[text-1].grid(row=8+text, column=0, sticky=W)
                 
             
            #placing plot button below the checkbuttons
-            self.button4.grid(row=8+len(items), column=0, sticky=W)
+            self.button4.grid(row=9+len(items), column=0, sticky=W)
             inf.close()
         else:
             print("Y2 not activated")
@@ -283,16 +287,19 @@ class MyFrame(Frame):
         listofy=[]
         listofx=[]
         
-       
-        for i in self.checkbuttons:
-            i.destroy()
-       
+     
+        
+        if self.var.get()==1:
+            for i in self.checkbuttons:
+                i.destroy()
+            self.entry2.destroy()   
+            
         for i in d:
             i.set=0
             
         self.listbox.destroy()
         self.entry1.destroy()      
-        self.entry2.destroy()   
+       
         self.listbox = Listbox(self, selectmode=MULTIPLE)
         del self.names[:]
         del d[:]
